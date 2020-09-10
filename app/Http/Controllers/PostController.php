@@ -30,7 +30,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        dd("CREATE");
+        return view('posts.create');
     }
 
     /**
@@ -42,6 +42,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        dd($request);
     }
 
     /**
