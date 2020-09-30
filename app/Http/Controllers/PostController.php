@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
+use App\Http\Requests\Post\StorePost;
+
 class PostController extends Controller
 {
 
@@ -41,8 +43,13 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    // public function store(Request $request)
+    public function store(StorePost $request)
     {
+        if (!$request->authorize()) {
+            return redirect(route('posts.create'))->withErrors('Not Authorized');
+        }
+        $validated = $request->validated();
 
         $slug = Str::slug(date('Ymd') . '-' . substr($request->title, 0, 22), '-');
 
@@ -54,7 +61,7 @@ class PostController extends Controller
             'published' => $request->published ? true : false
         ]);
 
-        return redirect(route('posts.index'));
+        return redirect(route('posts.show', $post->slug));
     }
 
     /**
@@ -100,6 +107,9 @@ class PostController extends Controller
 
             return redirect(route('posts.show', $post->slug));
         } else {
+            // Could Flash Error like this
+            // $request->session()->flash('error', 'Storing Failed');
+            // But who does this
             return redirect(route('posts.show', $post->slug));
         }
     }

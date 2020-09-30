@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-
+    @include('layouts.errors')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white shadow-xl sm:rounded-lg">
             <form action="{{ route('posts.store') }}" method="post">
